@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Pedidos</title>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+
+        <h1 class="text-center mb-5">
+            Sistema cajas
+        </h1>
+
+        <div class="row">
+
+            <!-- MODULO AGREGAR PEDIDO -->
+            <div class="col-md-5">
+
+                <div class="card shadow">
+
+                    <div class="card-header">
+                        <h3>Nuevo Pedido</h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <input 
+                            type="text"
+                            id="cliente"
+                            class="form-control mb-3"
+                            placeholder="Cliente"
+                        >
+
+                        <input 
+                            type="text"
+                            id="producto"
+                            class="form-control mb-3"
+                            placeholder="Producto"
+                        >
+
+                        <input 
+                            type="number"
+                            id="cantidad"
+                            class="form-control mb-3"
+                            placeholder="Cantidad"
+                        >
+
+                        <input 
+                            type="number"
+                            id="precio"
+                            class="form-control mb-3"
+                            placeholder="Precio"
+                        >
+
+                        <button 
+                            class="btn btn-primary w-100"
+                            onclick="guardarPedido()"
+                        >
+                            Agregar Pedido
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MODULO LISTA -->
+            <div class="col-md-7">
+
+                <div class="card shadow">
+
+                    <div class="card-header">
+                        <h3>Lista de Pedidos</h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <ul 
+                            id="listaPedidos"
+                            class="list-group mb-4"
+                        >
+                        </ul>
+
+                        <h4 id="ventasTotales">
+                            Total ventas: $0
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TU JS -->
+    <script src="caja.js"></script>
+
+    <script>
+
+        function guardarPedido(){
+
+            let cliente = document.getElementById("cliente").value;
+
+            let producto = document.getElementById("producto").value;
+
+            let cantidad = Number(document.getElementById("cantidad").value);
+
+            let precio = Number(document.getElementById("precio").value);
+
+
+            // LLAMAR FUNCION DEL JS
+            agregarPedido(cliente, producto, cantidad, precio);
+
+
+            // CREAR ELEMENTO DE LA LISTA
+            let lista = document.getElementById("listaPedidos");
+
+            let item = document.createElement("li");
+
+            item.className = "list-group-item";
+
+            item.textContent =
+            `${cliente} - ${producto} - ${cantidad} x $${precio}`;
+
+
+            lista.appendChild(item);
+
+
+            // ACTUALIZAR TOTAL
+            document.getElementById("ventasTotales").textContent =
+            `Total ventas: $${totalVentas}`;
+
+
+            // LIMPIAR INPUTS
+            document.getElementById("cliente").value = "";
+
+            document.getElementById("producto").value = "";
+
+            document.getElementById("cantidad").value = "";
+
+            document.getElementById("precio").value = "";
+
+        }
+
+    </script>
+
+</body>
+</html>

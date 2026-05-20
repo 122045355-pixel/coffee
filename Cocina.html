@@ -1,22 +1,111 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Gestión de Productos</title>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 
-    <h1>Gestión de Productos</h1>
+    <div class="container mt-5">
 
-    <input type="text" id="producto" placeholder="Nombre del producto">
+        <h1 class="text-center mb-5">
+            Gestión de Productos
+        </h1>
 
-    <button onclick="agregarProducto()">
-        Agregar
-    </button>
+        <div class="row">
 
-    <ul id="lista"></ul>
+            <!-- FORMULARIO -->
+            <div class="col-md-4">
 
+                <div class="card shadow">
+
+                    <div class="card-header bg-primary text-white">
+                        <h3>Nuevo Producto</h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <input
+                            type="text"
+                            id="nombre"
+                            class="form-control mb-3"
+                            placeholder="Nombre del producto"
+                        >
+
+                        <input
+                            type="number"
+                            id="precio"
+                            class="form-control mb-3"
+                            placeholder="Precio"
+                        >
+
+                        <button
+                            class="btn btn-primary w-100"
+                            onclick="agregarProducto()"
+                        >
+                            Agregar Producto
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLA PRODUCTOS -->
+            <div class="col-md-8">
+
+                <div class="card shadow">
+
+                    <div class="card-header bg-dark text-white">
+                        <h3>Lista de Productos</h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <table class="table table-striped">
+
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Acciones</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="tablaProductos">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- JS -->
     <script src="Funciones.js"></script>
 
 </body>
 </html>
+```
+
+---
+

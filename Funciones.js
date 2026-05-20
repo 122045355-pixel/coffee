@@ -1,57 +1,172 @@
-let productos = [];
 
-function agregarProducto() {
+// CARGAR PRODUCTOS DESDE LOCALSTORAGE
+let productos =
+JSON.parse(localStorage.getItem("productos")) || [];
 
-    let nombre = document.getElementById("producto").value;
+// MOSTRAR PRODUCTOS AL INICIAR
+mostrarProductos();
 
-    productos.push(nombre);
 
+// AGREGAR PRODUCTO
+function agregarProducto(){
+
+    let nombre =
+    document.getElementById("nombre").value;
+
+    let precio =
+    Number(document.getElementById("precio").value);
+
+
+    // VALIDACIONES
+    if(nombre === "" || precio <= 0){
+
+        alert("Completa todos los campos");
+
+        return;
+    }
+
+
+    // CREAR OBJETO PRODUCTO
+    const producto = {
+
+        id: Date.now(),
+
+        nombre: nombre,
+
+        precio: precio
+    };
+
+
+    // GUARDAR EN ARRAY
+    productos.push(producto);
+
+
+    // GUARDAR EN LOCALSTORAGE
+    localStorage.setItem(
+        "productos",
+        JSON.stringify(productos)
+    );
+
+
+    // ACTUALIZAR TABLA
     mostrarProductos();
 
-    document.getElementById("producto").value = "";
+
+    // LIMPIAR INPUTS
+    document.getElementById("nombre").value = "";
+
+    document.getElementById("precio").value = "";
 }
 
 
-function mostrarProductos() {
+// MOSTRAR PRODUCTOS
+function mostrarProductos(){
 
-    let lista = document.getElementById("lista");
+    let tabla =
+    document.getElementById("tablaProductos");
 
-    lista.innerHTML = "";
 
-    for(let i = 0; i < productos.length; i++) {
+    tabla.innerHTML = "";
 
-        lista.innerHTML += `
-            <li>
-                ${productos[i]}
 
-                <button onclick="editarProducto(${i})">
+    productos.forEach((producto, indice) => {
+
+        let fila =
+        document.createElement("tr");
+
+
+        fila.innerHTML = `
+            <td>${producto.id}</td>
+
+            <td>${producto.nombre}</td>
+
+            <td>$${producto.precio}</td>
+
+            <td>
+
+                <button
+                    class="btn btn-warning btn-sm"
+                    onclick="editarProducto(${indice})"
+                >
                     Editar
                 </button>
 
-                <button onclick="eliminarProducto(${i})">
+
+                <button
+                    class="btn btn-danger btn-sm"
+                    onclick="eliminarProducto(${indice})"
+                >
                     Eliminar
                 </button>
-            </li>
+
+            </td>
         `;
-    }
+
+
+        tabla.appendChild(fila);
+    });
 }
 
-function editarProducto(indice) {
+
+// EDITAR PRODUCTO
+function editarProducto(indice){
 
     let nuevoNombre = prompt(
-        "Editar producto:",
-        productos[indice]
+        "Nuevo nombre:",
+        productos[indice].nombre
     );
 
-    productos[indice] = nuevoNombre;
+
+    let nuevoPrecio = prompt(
+        "Nuevo precio:",
+        productos[indice].precio
+    );
+
+
+    if(nuevoNombre === "" || nuevoPrecio <= 0){
+
+        alert("Datos inválidos");
+
+        return;
+    }
+
+
+    productos[indice].nombre = nuevoNombre;
+
+    productos[indice].precio = Number(nuevoPrecio);
+
+
+    // ACTUALIZAR LOCALSTORAGE
+    localStorage.setItem(
+        "productos",
+        JSON.stringify(productos)
+    );
+
 
     mostrarProductos();
 }
 
 
-function eliminarProducto(indice) {
+// ELIMINAR PRODUCTO
+function eliminarProducto(indice){
 
-    productos.splice(indice, 1);
+    let confirmar = confirm(
+        "¿Eliminar producto?"
+    );
 
-    mostrarProductos();
+
+    if(confirmar){
+
+        productos.splice(indice, 1);
+
+
+        // ACTUALIZAR LOCALSTORAGE
+        localStorage.setItem(
+            "productos",
+            JSON.stringify(productos)
+        );
+
+
+        mostrarProductos();
+    }
 }

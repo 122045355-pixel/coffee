@@ -1,8 +1,11 @@
 let pedidos =
 JSON.parse(localStorage.getItem("pedidos")) || [];
+let productos =
+JSON.parse(localStorage.getItem("productos")) || [];
 let totalVentas = 0;
 mostrarPedidos();
-
+cargarProductos();
+mostrarMenu();
 function crearPedido() {
 
     let cliente =
@@ -28,20 +31,23 @@ function crearPedido() {
 
 function agregarPedido(cliente, producto, cantidad) {
 
-    const precios = {
-        CafeG: 120,
-        CafeM: 90,
-        Quason: 80,
-        Papas: 50,
-        Refresco: 35
-    };
+
+
+    let productoEncontrado =
+    productos.find(p => p.id == producto);
 
     const pedido = {
+
         cliente: cliente,
-        producto: producto,
+
+        producto: productoEncontrado.nombre,
+
         cantidad: cantidad,
-        precio: precios[producto],
-        total: cantidad * precios[producto]
+
+        precio: productoEncontrado.precio,
+
+        total:
+        cantidad * productoEncontrado.precio
     };
 
     // GUARDAR PEDIDO
@@ -81,5 +87,38 @@ function mostrarPedidos(){
         `;
 
         tabla.appendChild(fila);
+    });
+}
+function cargarProductos(){
+
+    let select =
+    document.getElementById("producto");
+
+    select.innerHTML =
+    `<option value="">Selecciona un producto</option>`;
+
+    productos.forEach(producto => {
+
+        select.innerHTML += `
+            <option value="${producto.id}">
+                ${producto.nombre} - $${producto.precio}
+            </option>
+        `;
+    });
+}
+function mostrarMenu(){
+
+    let lista =
+    document.getElementById("listaMenu");
+
+    lista.innerHTML = "";
+
+    productos.forEach(producto => {
+
+        lista.innerHTML += `
+            <li class="list-group-item">
+                ${producto.nombre} - $${producto.precio}
+            </li>
+        `;
     });
 }

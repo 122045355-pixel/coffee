@@ -1,5 +1,7 @@
-let pedidos = [];
+let pedidos =
+JSON.parse(localStorage.getItem("pedidos")) || [];
 let totalVentas = 0;
+mostrarPedidos();
 
 function crearPedido() {
 
@@ -15,27 +17,13 @@ function crearPedido() {
     // LLAMAR FUNCION
     let pedido = agregarPedido(cliente, producto, cantidad);
 
-    // CREAR FILA
-    let tabla =
-    document.getElementById("tablaPedidos");
-
-    let fila =
-    document.createElement("tr");
-
-    fila.innerHTML = `
-        <td>${pedido.cliente}</td>
-        <td>${pedido.producto}</td>
-        <td>${pedido.cantidad}</td>
-        <td>$${pedido.precio}</td>
-        <td>$${pedido.total}</td>
-    `;
-
-    tabla.appendChild(fila);
-
-    // LIMPIAR INPUTS
+    mostrarPedidos();
+    
     document.getElementById("cliente").value = "";
     document.getElementById("producto").value = "";
     document.getElementById("cantidad").value = "";
+
+    
 }
 
 function agregarPedido(cliente, producto, cantidad) {
@@ -58,6 +46,10 @@ function agregarPedido(cliente, producto, cantidad) {
 
     // GUARDAR PEDIDO
     pedidos.push(pedido);
+    localStorage.setItem(
+    "pedidos",
+    JSON.stringify(pedidos)
+    );
 
     // SUMAR TOTAL
     totalVentas += pedido.total;
@@ -67,4 +59,27 @@ function agregarPedido(cliente, producto, cantidad) {
     console.log("Ventas totales: $" + totalVentas);
 
     return pedido;
+}
+function mostrarPedidos(){
+
+    let tabla =
+    document.getElementById("tablaPedidos");
+
+    tabla.innerHTML = "";
+
+    pedidos.forEach(pedido => {
+
+        let fila =
+        document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>${pedido.cliente}</td>
+            <td>${pedido.producto}</td>
+            <td>${pedido.cantidad}</td>
+            <td>$${pedido.precio}</td>
+            <td>$${pedido.total}</td>
+        `;
+
+        tabla.appendChild(fila);
+    });
 }

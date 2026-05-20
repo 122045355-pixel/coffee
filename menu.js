@@ -39,13 +39,9 @@ function agregarPedido(cliente, producto, cantidad) {
     const pedido = {
 
         cliente: cliente,
-
         producto: productoEncontrado.nombre,
-
         cantidad: cantidad,
-
         precio: productoEncontrado.precio,
-
         total:
         cantidad * productoEncontrado.precio
     };

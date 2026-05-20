@@ -1,5 +1,5 @@
 
-// CARGAR PRODUCTOS DESDE LOCALSTORAGE
+
 let productos =
 JSON.parse(localStorage.getItem("productos")) || [];
 

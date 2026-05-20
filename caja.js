@@ -1,11 +1,14 @@
 // OBTENER PEDIDOS GUARDADOS
 let pedidos =
 JSON.parse(localStorage.getItem("pedidos")) || [];
+let productos =
+JSON.parse(localStorage.getItem("productos")) || [];
 
 let totalVentas = 0;
 
 // MOSTRAR PEDIDOS AL ABRIR
 mostrarPedidos();
+cargarProductos();
 
 function guardarPedido(){
 
@@ -18,16 +21,19 @@ function guardarPedido(){
     let cantidad =
     Number(document.getElementById("cantidad").value);
 
-    // VALIDACIONES
+    // VALIDAR
     if(cliente === "" || producto === "" || cantidad <= 0){
 
         alert("Completa todos los campos");
+
         return;
     }
 
     agregarPedido(cliente, producto, cantidad);
 
-    // LIMPIAR INPUTS
+    mostrarPedidos();
+
+    // LIMPIAR
     document.getElementById("cliente").value = "";
 
     document.getElementById("producto").value = "";
@@ -35,32 +41,33 @@ function guardarPedido(){
     document.getElementById("cantidad").value = "";
 }
 
-
 // FUNCION PARA AGREGAR PEDIDOS
 function agregarPedido(cliente, producto, cantidad){
 
-    const precios = {
-        CafeG: 120,
-        CafeM: 90,
-        Quason: 80,
-        Papas: 50,
-        Refresco: 35
-    };
+    let productoEncontrado =
+    productos.find(p => p.id == producto);
+
+    if(!productoEncontrado){
+
+        alert("Producto no encontrado");
+
+        return;
+    }
 
     const pedido = {
 
         cliente: cliente,
 
-        producto: producto,
+        producto: productoEncontrado.nombre,
 
         cantidad: cantidad,
 
-        precio: precios[producto],
+        precio: productoEncontrado.precio,
 
-        total: cantidad * precios[producto]
+        total:
+        cantidad * productoEncontrado.precio
     };
-
-    // GUARDAR EN ARRAY
+    // GUARDAR PEDIDO
     pedidos.push(pedido);
 
     // GUARDAR EN LOCALSTORAGE
@@ -68,12 +75,6 @@ function agregarPedido(cliente, producto, cantidad){
         "pedidos",
         JSON.stringify(pedidos)
     );
-
-    // ACTUALIZAR LISTA
-    mostrarPedidos();
-
-    console.log("Pedido agregado");
-    console.log(pedido);
 }
 
 
@@ -92,10 +93,11 @@ function mostrarPedidos(){
         let item =
         document.createElement("li");
 
-        item.className = "list-group-item";
+        item.className =
+        "list-group-item";
 
         item.textContent =
-        `${pedido.cliente} - ${pedido.producto} - ${pedido.cantidad} x $${pedido.precio} = $${pedido.total}`;
+        `${pedido.cliente} - ${pedido.producto} - ${pedido.cantidad} x $${pedido.precio}`;
 
         lista.appendChild(item);
 
@@ -104,4 +106,21 @@ function mostrarPedidos(){
 
     document.getElementById("ventasTotales").textContent =
     `Total ventas: $${totalVentas}`;
+}
+function cargarProductos(){
+
+    let select =
+    document.getElementById("producto");
+
+    select.innerHTML =
+    `<option value="">Selecciona un producto</option>`;
+
+    productos.forEach(producto => {
+
+        select.innerHTML += `
+            <option value="${producto.id}">
+                ${producto.nombre} - $${producto.precio}
+            </option>
+        `;
+    });
 }
